@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-service
+  labels:
+    app: grafana
+spec:
+  type: NodePort
+  ports:
+  - port: 3000
+    targetPort: 3000
+    nodePort: 30002
+    protocol: TCP
+    name: grafana-port
+  selector:
+      app: grafana
+      prod: IN
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-service
+  labels:
+    app: prometheus
+spec:
+  type: NodePort
+  ports:
+  - port: 9090
+    targetPort: 9090
+    nodePort: 30001
+    protocol: TCP
+    name: prometheus-port
+  selector:
+      app: prometheus
+      prod: IN
