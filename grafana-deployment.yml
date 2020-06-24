@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+    prod: IN
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+      prod: IN
+  template:
+    metadata:
+      labels:
+        app: grafana
+        prod: IN
+    spec:
+      volumes:
+         - name: grafanapv
+           persistentVolumeClaim:
+               claimName: pvc-for-grafana
+      containers:
+      - name: grafana
+        image: grafana/grafana
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+          - mountPath: "/var/lib/grafana"
+            name: grafanapv
+            readOnly: false
+          - mountPath: "/etc/grafana/data"
+            name: grafanapv
+            readOnly: false
+          - mountPath: "/etc/grafana/log"
+            name: grafanapv
+            readOnly: false
+          - mountPath: "/etc/grafana/plugins"
+            name: grafanapv
+            readOnly: false
+          - mountPath: "/etc/grafana/provisioning/dashboards"
+            name: grafanapv
+            readOnly: false
+          - mountPath: "/etc/grafana/provisioning/notifiers"
+            name: grafanapv
+            readOnly: false
+          - mountPath: "/etc/grafana/provisioning/datasources"
+            name: grafanapv
+            readOnly: false
